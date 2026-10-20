@@ -58,7 +58,7 @@ button{background:#15121c;border-color:#6a5530}button.blue{background:#4a1620;bo
 .sp{background:radial-gradient(circle,#2a2438 0,transparent 70%)}.ttl{border-color:var(--mag);color:#f0e6d0}footer{color:#a05050}
 #sublinks{display:none}
 body.ingame #menu a{display:none}body.ingame #menu{position:static;padding:4px;border-bottom-width:2px}body.ingame .ttl{font-size:15px;padding:2px 10px;margin:0 auto}
-.mainops{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.mainops button{flex:1 1 30%;margin:0}
+.zktabs button{padding:2px 6px;font-size:12px;min-width:0}.zkwrap{overflow-x:auto}.zktbl{width:100%;border-collapse:collapse;font-size:12px}.zktbl th{background:#2a1420;color:#e8c070;border:1px solid #5a4030;padding:3px}.zktbl td{border:1px solid #3a2c2c;padding:2px 3px;text-align:center;vertical-align:middle}.zktbl tr.zk-got{cursor:pointer;background:#1a1420}.zktbl tr.zk-seen{background:#121018;color:#aaa}.zktbl tr.zk-un{background:#0a0a0e;color:#666}.zsp{width:40px;height:40px;image-rendering:pixelated}.zsp.sil{filter:brightness(0) drop-shadow(0 0 1px #556)}.zsp.dim{filter:grayscale(1) brightness(.6)}.grn{color:#7c7}.gry{color:#888}.zkbar{height:8px;background:#222;border:1px solid #555;margin-top:4px}.zkbar i{display:block;height:100%;background:linear-gradient(90deg,#a33,#e8c070)}.zkst{display:flex;align-items:center;gap:4px;font-size:12px}.zkst span{width:24px}.zkst i{height:8px;background:#c84;display:block}.zkst small{margin-left:4px}.mainops{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.mainops button{flex:1 1 22%;margin:0;padding-left:2px;padding-right:2px}
 #back button{width:100%;margin:0}
 body.ingame #sublinks{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:2px 4px;max-width:1000px;margin:auto;padding:6px 10px}
 #sublinks a{color:#a89a80;font-size:13px;text-decoration:underline;padding:12px 8px;min-height:44px;display:inline-flex;align-items:center}
@@ -70,10 +70,10 @@ body.ingame #sublinks{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:2
 .ck{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin:2px 10px 2px 0}.ck input{min-height:0;width:22px;height:22px}
 .grn{color:#6fdc6f;font-weight:bold}#log{max-height:520px}
 </style></head><body>
-<div id="menu"><a href="#playroom" class="r">PLAYROOM</a><a href="#manual">PLAYMANUAL</a><a href="#bbs">BBS</a><a href="#haigohyo">配合表</a><a href="#admin">管理モード</a><a href="#top">TOP</a>
-<div class="ttl">冥窟ノ血脈 <small>MEIKUTSU Ver1.4</small></div></div>
+<div id="menu"><a href="#playroom" class="r">PLAYROOM</a><a href="#manual">PLAYMANUAL</a><a href="#bbs">BBS</a><a href="#haigohyo">配合表</a><a href="#zukanhyo">図鑑表</a><a href="#admin">管理モード</a><a href="#top">TOP</a>
+<div class="ttl">冥窟ノ血脈 <small>MEIKUTSU Ver1.5</small></div></div>
 <div class="wrap" id="app"></div><div class="wrap" id="back"></div><nav id="sublinks"><a href="#manual">PLAYMANUAL</a><a href="#admin">管理モード</a><a href="#top">TOP</a><a href="#top" onclick="sessionStorage.removeItem('meikutsu_in')">ログアウト</a></nav>
-<footer><table class="cr"><tr><td>原作・製作</td><td>清掃員工房</td></tr><tr><td>ドット</td><td>カナタゲームズ</td></tr></table>MEIKUTSU Ver1.4 試作版<br>Copyright (C) 2026 清掃員工房 All Rights Reserved.</footer>
+<footer><table class="cr"><tr><td>原作・製作</td><td>清掃員工房</td></tr><tr><td>ドット</td><td>カナタゲームズ</td></tr></table>MEIKUTSU Ver1.5 試作版<br>Copyright (C) 2026 清掃員工房 All Rights Reserved.</footer>
 <script>
 const DEBUG=/debug=1/.test(location.search),CD=DEBUG?0:15000;
 // ===== データ定義 =====
@@ -480,11 +480,11 @@ function lineRule(la,lb){const lo=l=>MON.filter(m=>m.line==l&&BREEDABLE(m)).sort
 function reachable(){const got=new Set([...STARTERS.map(byName),...MON.filter(m=>m.wild).map(m=>m.id)]);let ch=1;while(ch){ch=0;const g=[...got];for(const a of g)for(const b of g){if(a==b)continue;const c=crossRule({mid:a},{mid:b});if(!got.has(c)){got.add(c);ch=1}}}return MON.filter(m=>!got.has(m.id)).map(m=>m.name)}
 function art(id,cls){const m=MON[id];return `<img class="sp ${cls||""}" src="${m.img}" alt="${m.name}">`;}
 // save
-let S=null;const KEY="meikutsu_save2";function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}}
+let S=null;const KEY="meikutsu_save2";function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}if(S){S.found=S.found||[];S.foundCross=S.foundCross||[];S.box=S.box||[];S.box.forEach(u=>{if(!S.found.includes(u.mid))S.found.push(u.mid)});S.seen=S.seen||S.found.slice();S.found.forEach(i=>{if(!S.seen.includes(i))S.seen.push(i)})}}
 function save(){if(S)localStorage.setItem(KEY,JSON.stringify(S));}
 function mk(mid,cnt=0,sk,mx){return{uid:Date.now()+Math.random(),mid,lv:1,exp:0,cnt,mx:mx||MON[mid].maxLv,sk:sk||MON[mid].skills.slice()};}
 // 最大Lv: 個体ごと(u.mx)。旧セーブの個体は従来式のまま
-function maxLvU(u){return u.mx!=null?u.mx:maxLvU(u)}
+function maxLvU(u){return u.mx!=null?u.mx:maxLvOf(u.mid,u.cnt||0)}
 const GC0={早熟:p=>Math.pow(p,0.5),普通:p=>p,晩成:p=>Math.pow(p,1.8)};
 // 種族の最大Lvを超えた分は対数でゆるやかに伸びる（Lv1000でも極端にならない）
 const GC={};for(const k in GC0)GC[k]=p=>p<=1?GC0[k](p):1+0.3*Math.log2(p);
@@ -527,7 +527,7 @@ function detail(uid,zmid){const u=uid!=null?S.box.find(b=>b.uid==uid):{mid:zmid,
 function playroom(){if(need())return;const pt=S.party.map(id=>S.box.find(b=>b.uid==id));
  $(`<div class="head">PLAYROOM ─ ${esc(S.name)} の牧場</div><div>現在 <span class="fl">&nbsp;地下${S.floor}階&nbsp;</span> 最深 <span class="red">${S.deep}</span>階 / <span class="yel">${S.gold}G</span></div>
  <div class="box"><b class="yel">パーティ</b><br>${pt.map(u=>`<div class="prow">${stat(u)} <button onclick="toBox(${u.uid})">外す</button></div>`).join("")}</div>
- <button id="explore" onclick="explore()">地下${S.floor}階を探索する</button> <span id="cd" class="red"></span> <div class="mainops"><button class="blue" onclick="location.hash='haigo'">配合所へ</button><button class="blue" id="go-hyo" onclick="location.hash='haigohyo'">配合表</button><button class="blue" id="go-bbs" onclick="location.hash='bbs'">BBS</button></div>
+ <button id="explore" onclick="explore()">地下${S.floor}階を探索する</button> <span id="cd" class="red"></span> <div class="mainops"><button class="blue" onclick="location.hash='haigo'">配合所へ</button><button class="blue" id="go-hyo" onclick="location.hash='haigohyo'">配合表</button><button class="blue" id="go-zk" onclick="location.hash='zukanhyo'">図鑑表</button><button class="blue" id="go-bbs" onclick="location.hash='bbs'">BBS</button></div>
  <div id="log">${S.log||"探索するとここに戦闘ログが出ます。"}</div>${S.pend!=null?`<div class="box" id="recruit">${art(S.pend)} <b class="yel">${MON[S.pend].name}</b>が仲間になりたそうにしている！<br><small>選ばずに次の探索をすると見逃したことになります。</small><div class="mainops"><button class="blue" id="join" onclick="recruit(1)">仲間にする</button><button id="skip" onclick="recruit(0)">見逃す</button></div></div>`:""}
  <div class="box"><b class="yel">牧場（控え）</b> ${S.box.length}体<br>${S.box.filter(b=>!S.party.includes(b.uid)).map(u=>`<div class="prow">${stat(u)} <button onclick="toParty(${u.uid})" ${S.party.length>=3?'disabled':''}>入れる</button></div>`).join("")||"なし"}</div>`);tick();}
 function toBox(id){if(S.party.length<=1)return alert("パーティは1体以上必要です");S.party=S.party.filter(x=>x!=id);save();playroom()}
@@ -538,6 +538,7 @@ function rnd(n){return Math.floor(Math.random()*n)}
 function explore(){if(remain()>0)return;let pre="";if(S.pend!=null){pre=`<span style="color:#999">（${MON[S.pend].name}は去っていった…）</span><br>`;S.pend=null;}const f=S.floor,pt=S.party.map(id=>S.box.find(b=>b.uid==id));
  const tierMax=Math.min(3,Math.floor(f/6)),ne=1+rnd(Math.min(3,1+Math.floor(f/3)));
  const pool=enemyPool(f),sc=floorScale(f),en=[];for(let i=0;i<ne;i++){const m=pool[rnd(pool.length)];en.push(bat(m.id,Math.min(m.maxLv,1+Math.floor(f*0.3)),0,m.skills,1,0.8*sc,sc))}
+en.forEach(e=>{if(e.mid!=null&&!S.seen.includes(e.mid))S.seen.push(e.mid)});
  const al=pt.map(u=>bat(u.mid,u.lv,u.cnt,u.sk,0,1));let L=[`<span class="yel">≪地下${f}階≫</span> ${en.map(e=>e.name).join("・")} があらわれた！`];
  battle(al,en,L);
  const win=en.every(e=>e.hp<=0)&&al.some(a=>a.hp>0);
@@ -611,10 +612,32 @@ let hl=0,zl=0;function hyo(){const f=S?S.found:[];const sh=id=>f.includes(id)?`$
  for(const k in SPECIAL){const[a,b]=k.split("+"),d=S&&S.foundCross.some(x=>x==k||x==b+"+"+a),m=MON[SPECIAL[k]];t+=`<li${m.rare?' class="rare"':''}>${a} × ${b} → ${d?`<b class="yel">${m.name}</b>`:'<span class="red">？？？</span>'}${m.rare?' <small class="yel">★特殊限定</small>':''}</li>`}
  const zs=MON.filter(m=>zl<0||m.line==zl);
  t+=`</ul></div><div class="head">モンスター図鑑 発見 ${f.length}/${MON.length}</div><div class="box">${tabs(zl,"zl",1)}<p>表示中：${zs.filter(m=>f.includes(m.id)).length}/${zs.length}</p><div class="grid" id="zukan">${zs.map(m=>`<div class="cell${m.rare?' rare':''}" ${f.includes(m.id)?`onclick="detail(null,${m.id})" style="cursor:pointer"`:''}><small>${LINES[m.line][0]}・★${m.tier+1}</small><br><small class="${m.rare||m.wild?'yel':''}">${acq(m)}</small><br>${sh(m.id)}</div>`).join("")}</div></div>`;$(t)}
+let zkl=-1;function zkFloor(m){if(m.rare)return "－";const t=zoneText(m);return (t||"")+(t?"<br>":"")+`B${ZONE_END+1}〜`}
+function zkAcq(m){return m.rare?'<span class="red">特殊配合のみ</span>':m.wild?'<span class="yel">野生のみ</span>':'通常'}
+function zkh(){const G=S?S.found:[],V=S?(S.seen||[]):[],n=G.length,ms=MON.filter(m=>zkl<0||m.line==zkl);
+ const tb=`<div class="tabs zktabs"><button class="${zkl<0?'on':''}" onclick="zkl=-1;zkh()">全</button>${LINES.map((l,i)=>`<button class="${zkl==i?'on':''}" style="color:${l[1]}" onclick="zkl=${i};zkh()">${l[0]}</button>`).join("")}</div>`;
+ const row=m=>{const g=G.includes(m.id),v=V.includes(m.id),no=String(m.id+1).padStart(3,"0");
+  if(!g&&!v)return `<tr class="zk-un"><td>${no}</td><td><img class="zsp sil" src="${m.img}" alt=""></td><td class="red">？？？</td><td>${LINES[m.line][0]}</td><td>？</td><td>？</td><td>？</td></tr>`;
+  return `<tr class="${g?'zk-got':'zk-seen'}" ${g?`onclick="zkDetail(${m.id})"`:''}><td>${no}</td><td><img class="zsp${g?'':' dim'}" src="${m.img}" alt="${m.name}"></td><td>${g?`<b class="yel">${m.name}</b>`:m.name}<br><small class="${g?'grn':'gry'}">${g?'◆入手':'◇出会った'}</small></td><td style="color:${LINES[m.line][1]}">${LINES[m.line][0]}</td><td>★${m.tier+1}</td><td>${zkAcq(m)}</td><td><small>${zkFloor(m)}</small></td></tr>`};
+ $(`<div class="head">図鑑表</div><div class="box zksum">入手 <b class="red">${n}</b> / ${MON.length} 体（<b class="yel">${(n/MON.length*100).toFixed(1)}%</b>）　出会った ${V.length} 体<div class="zkbar"><i style="width:${n/MON.length*100}%"></i></div></div>
+ <div class="box">${tb}<p><small>表示中 ${ms.filter(m=>G.includes(m.id)).length}/${ms.length}　◆入手＝タップで詳細　◇出会っただけ</small></p><div class="zkwrap"><table class="zktbl" id="zktbl"><tr><th>No</th><th>絵</th><th>名前</th><th>系統</th><th>★</th><th>入手</th><th>出現階</th></tr>${ms.map(row).join("")}</table></div></div>`)}
+function zkDetail(id){const m=MON[id];if(!S||!S.found.includes(id))return;const ST2={hp:"HP",mp:"MP",atk:"攻",def:"守",spd:"速",wis:"賢"};
+ const b=ST.map(k=>[k,m.base[k]/(k=="hp"?3:k=="mp"?1.5:1)]),mx=Math.max(...b.map(x=>x[1])),top=b.slice().sort((x,y)=>y[1]-x[1]).slice(0,2).map(x=>ST2[x[0]]||x[0]);
+ const bars=ST.map((k,i)=>`<div class="zkst"><span>${ST2[k]||k}</span><i style="width:${Math.round(b[i][1]/mx*100)}%"></i><small>${m.base[k]}</small></div>`).join("");
+ const sk=m.skills.map(k=>SKILLS[k]?`<li><b>${SKILLS[k].name}</b> <small>MP${SKILLS[k].mp}</small><br><small>${SKILLS[k].desc||""}</small></li>`:"").join("");
+ const sp=Object.keys(SPECIAL).filter(k=>SPECIAL[k]==id).map(k=>{const[a,c]=k.split("+"),d=S.foundCross.some(x=>x==k||x==c+"+"+a);return d?`<li>${a} × ${c}</li>`:'<li class="red">？？？ × ？？？（未発見のレシピ）</li>'}).join("");
+ const mixes=[];if(!m.rare&&!m.wild)LINES.forEach((_,i)=>LINES.forEach((_,j)=>{if(mixLine(i,j)==m.line&&mixes.length<3&&!mixes.includes(i+"×"+j))mixes.push(i+"×"+j)}));
+ const res=Object.entries(m.res).map(([e,v])=>`${e}:${v}`).join(" ")||"なし";
+ const d=document.createElement("div");d.id="detail";d.onclick=e=>{if(e.target==d)d.remove()};
+ d.innerHTML=`<div class="dbox" id="zkd"><div class="head">No.${String(id+1).padStart(3,"0")} ${m.name} <small>${LINES[m.line][0]}系 ★${m.tier+1}</small></div><div class="box"><div class="dtop">${art(id,"big")}<div>入手：${zkAcq(m)}<br>成長：<b class="yel">${m.grow}</b><br>最大Lv ${m.maxLv}<br>出現：<small>${zkFloor(m)}</small></div></div>
+ <p>ステータス傾向：<b class="yel">${top.join("・")}</b>が高め</p>${bars}<p>耐性：<small>${res}</small></p>
+ <p class="yel">スキル</p><ul class="splist">${sk}</ul>
+ <p class="yel">配合のヒント</p><ul class="splist">${m.rare?sp:m.wild?'<li>野生でのみ仲間になる。出現階を探索しよう。</li>':`<li>${LINES[m.line][0]}系の子が生まれる組み合わせ（例）：${mixes.map(x=>x.split("×").map(i=>LINES[i][0]).join("×")).join("、")}</li><li>親の★が高いほど高ランクの子が生まれやすい。</li>`}${!m.rare&&sp?sp:""}</ul>
+ <button class="blue" onclick="document.getElementById('detail').remove()">閉じる</button></div></div>`;document.body.appendChild(d)}
 function manual(){$(`<div class="head">PLAYMANUAL</div><div class="box">1. <span class="yel">NEWGAME</span>で名前を決め、相棒を1体もらいます。<br>2. <span class="yel">PLAYROOM</span>で地下を1階ずつ探索。戦闘は自動です。探索は<span class="red">15秒</span>に1回。<br>3. モンスターはHP・MP・攻撃力・守備力・素早さ・賢さの6能力と、成長タイプ（早熟/普通/晩成）、最大Lv、スキルを持ちます。戦闘ではMPを使ってスキルを自動で使い分けます（毒・眠り・混乱あり）。モンスターをタップすると詳細が見られます。<br>3b. 勝つと経験値とゴールド。ときどき敵が仲間になります（パーティは3体まで、残りは牧場）。<br>4. 負けると<span class="red">2階</span>戻されます。<br>5. <span class="yel">配合所</span>で2体を掛け合わせると新しいモンスターが誕生。子の系統は「血統」（1体目）の系統。配合回数が多いほど強く育ちます。<br>6. 特定の組み合わせでは特殊配合が起こります。<span class="yel">配合表</span>で確認しよう。</div>`)}
 function route(){clearTimeout(timer);load();const h=location.hash.slice(1)||"top";
  const inG=!!S&&!["top","new"].includes(h);document.body.classList.toggle("ingame",inG);
- document.getElementById("back").innerHTML=inG&&["haigohyo","bbs","manual","haigo","admin"].includes(h)?`<button id="backpr" class="blue" onclick="location.hash='playroom'">◀ PLAYROOMに戻る</button>`:"";
- ({top:topPage,new:newg,playroom,haigo,haigohyo:hyo,manual,bbs:()=>$(`<div class="head">BBS</div><div class="box red">只今準備中です。</div>`),admin:()=>$(`<div class="head">管理モード</div><div class="box red">管理者専用です（準備中）。</div>`)}[h]||topPage)();scrollTo(0,0)}
+ document.getElementById("back").innerHTML=inG&&["haigohyo","zukanhyo","bbs","manual","haigo","admin"].includes(h)?`<button id="backpr" class="blue" onclick="location.hash='playroom'">◀ PLAYROOMに戻る</button>`:"";
+ ({top:topPage,new:newg,playroom,haigo,haigohyo:hyo,zukanhyo:zkh,manual,bbs:()=>$(`<div class="head">BBS</div><div class="box red">只今準備中です。</div>`),admin:()=>$(`<div class="head">管理モード</div><div class="box red">管理者専用です（準備中）。</div>`)}[h]||topPage)();scrollTo(0,0)}
 addEventListener("hashchange",route);route();
 </script><script>if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});</script></body></html>
