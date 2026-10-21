@@ -58,7 +58,7 @@ button{background:#15121c;border-color:#6a5530}button.blue{background:#4a1620;bo
 .sp{background:radial-gradient(circle,#2a2438 0,transparent 70%)}.ttl{border-color:var(--mag);color:#f0e6d0}footer{color:#a05050}
 #sublinks{display:none}
 body.ingame #menu a{display:none}body.ingame #menu{position:static;padding:4px;border-bottom-width:2px}body.ingame .ttl{font-size:15px;padding:2px 10px;margin:0 auto}
-.zktabs button{padding:2px 6px;font-size:12px;min-width:0}.zkwrap{overflow-x:auto}.zktbl{width:100%;border-collapse:collapse;font-size:12px}.zktbl th{background:#2a1420;color:#e8c070;border:1px solid #5a4030;padding:3px}.zktbl td{border:1px solid #3a2c2c;padding:2px 3px;text-align:center;vertical-align:middle}.zktbl tr.zk-got{cursor:pointer;background:#1a1420}.zktbl tr.zk-seen{background:#121018;color:#aaa}.zktbl tr.zk-un{background:#0a0a0e;color:#666}.zsp{width:40px;height:40px;image-rendering:pixelated}.zsp.sil{filter:brightness(0) drop-shadow(0 0 1px #556)}.zsp.dim{filter:grayscale(1) brightness(.6)}.grn{color:#7c7}.gry{color:#888}.zkbar{height:8px;background:#222;border:1px solid #555;margin-top:4px}.zkbar i{display:block;height:100%;background:linear-gradient(90deg,#a33,#e8c070)}.zkst{display:flex;align-items:center;gap:4px;font-size:12px}.zkst span{width:24px}.zkst i{height:8px;background:#c84;display:block}.zkst small{margin-left:4px}.mainops{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.mainops button{flex:1 1 22%;margin:0;padding-left:2px;padding-right:2px}
+.zktabs button{padding:2px 6px;font-size:12px;min-width:0}.zkwrap{overflow-x:auto}.zktbl{width:100%;border-collapse:collapse;font-size:12px}.zktbl th{background:#2a1420;color:#e8c070;border:1px solid #5a4030;padding:3px}.zktbl td{border:1px solid #3a2c2c;padding:2px 3px;text-align:center;vertical-align:middle}.zktbl tr.zk-got{cursor:pointer;background:#1a1420}.zktbl tr.zk-seen{background:#121018;color:#aaa}.zktbl tr.zk-un{background:#0a0a0e;color:#666}.zsp{width:40px;height:40px;image-rendering:pixelated}.zsp.sil{filter:brightness(0) drop-shadow(0 0 1px #556)}.zsp.dim{filter:grayscale(1) brightness(.6)}.grn{color:#7c7}.gry{color:#888}.zkbar{height:8px;background:#222;border:1px solid #555;margin-top:4px}.zkbar i{display:block;height:100%;background:linear-gradient(90deg,#a33,#e8c070)}.zkst{display:flex;align-items:center;gap:4px;font-size:12px}.zkst span{width:24px}.zkst i{height:8px;background:#c84;display:block}.zkst small{margin-left:4px}.card.lowlv{opacity:.55}.mainops{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.mainops button{flex:1 1 22%;margin:0;padding-left:2px;padding-right:2px}
 #back button{width:100%;margin:0}
 body.ingame #sublinks{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:2px 4px;max-width:1000px;margin:auto;padding:6px 10px}
 #sublinks a{color:#a89a80;font-size:13px;text-decoration:underline;padding:12px 8px;min-height:44px;display:inline-flex;align-items:center}
@@ -71,9 +71,9 @@ body.ingame #sublinks{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:2
 .grn{color:#6fdc6f;font-weight:bold}#log{max-height:520px}
 </style></head><body>
 <div id="menu"><a href="#playroom" class="r">PLAYROOM</a><a href="#manual">PLAYMANUAL</a><a href="#bbs">BBS</a><a href="#haigohyo">配合表</a><a href="#zukanhyo">図鑑表</a><a href="#admin">管理モード</a><a href="#top">TOP</a>
-<div class="ttl">冥窟ノ血脈 <small>MEIKUTSU Ver1.5</small></div></div>
+<div class="ttl">冥窟ノ血脈 <small>MEIKUTSU Ver1.6</small></div></div>
 <div class="wrap" id="app"></div><div class="wrap" id="back"></div><nav id="sublinks"><a href="#manual">PLAYMANUAL</a><a href="#admin">管理モード</a><a href="#top">TOP</a><a href="#top" onclick="sessionStorage.removeItem('meikutsu_in')">ログアウト</a></nav>
-<footer><table class="cr"><tr><td>原作・製作</td><td>清掃員工房</td></tr><tr><td>ドット</td><td>カナタゲームズ</td></tr></table>MEIKUTSU Ver1.5 試作版<br>Copyright (C) 2026 清掃員工房 All Rights Reserved.</footer>
+<footer><table class="cr"><tr><td>原作・製作</td><td>清掃員工房</td></tr><tr><td>ドット</td><td>カナタゲームズ</td></tr></table>MEIKUTSU Ver1.6 試作版<br>Copyright (C) 2026 清掃員工房 All Rights Reserved.</footer>
 <script>
 const DEBUG=/debug=1/.test(location.search),CD=DEBUG?0:15000;
 // ===== データ定義 =====
@@ -483,7 +483,7 @@ function art(id,cls){const m=MON[id];return `<img class="sp ${cls||""}" src="${m
 let S=null;const KEY="meikutsu_save2";function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}if(S){S.found=S.found||[];S.foundCross=S.foundCross||[];S.box=S.box||[];S.box.forEach(u=>{if(!S.found.includes(u.mid))S.found.push(u.mid)});S.seen=S.seen||S.found.slice();S.found.forEach(i=>{if(!S.seen.includes(i))S.seen.push(i)})}}
 function save(){if(S)localStorage.setItem(KEY,JSON.stringify(S));}
 function mk(mid,cnt=0,sk,mx){return{uid:Date.now()+Math.random(),mid,lv:1,exp:0,cnt,mx:mx||MON[mid].maxLv,sk:sk||MON[mid].skills.slice()};}
-// 最大Lv: 個体ごと(u.mx)。旧セーブの個体は従来式のまま
+// 最大Lv: 個体ごと(u.mx)。配合で生まれた子は親2体の配合時Lvの合計。旧セーブの個体は従来式のまま
 function maxLvU(u){return u.mx!=null?u.mx:maxLvOf(u.mid,u.cnt||0)}
 const GC0={早熟:p=>Math.pow(p,0.5),普通:p=>p,晩成:p=>Math.pow(p,1.8)};
 // 種族の最大Lvを超えた分は対数でゆるやかに伸びる（Lv1000でも極端にならない）
@@ -590,15 +590,15 @@ function battle(al,en,L){for(let turn=1;turn<=20;turn++){const all=[...al,...en]
 function recruit(ok){if(S.pend==null)return;const mid=S.pend;S.pend=null;let msg;
  if(ok){const nu=mk(mid);S.box.push(nu);if(!S.found.includes(mid))S.found.push(mid);const p=S.party.length<3;if(p)S.party.push(nu.uid);msg=`<span class="yel">${MON[mid].name}が仲間になった！（${p?"パーティ":"牧場"}へ）</span>`}
  else msg=`<span style="color:#999">${MON[mid].name}を見逃した。</span>`;S.log+="<br>"+msg;save();playroom();}
-let sel=[],inh=null;function inhInfo(){const[a,b]=sel.map(id=>S.box.find(x=>x.uid==id)),c=crossRule(a,b),inn=MON[c].skills,cands=[...new Set([...a.sk,...b.sk])].filter(k=>!inn.includes(k));return{a,b,c,inn,cands,slots:SKMAX-inn.length}}
+const BREED_LV=10;let sel=[],inh=null,bmsg="";function childMx(a,b){return a.lv+b.lv}function inhInfo(){const[a,b]=sel.map(id=>S.box.find(x=>x.uid==id)),c=crossRule(a,b),inn=MON[c].skills,cands=[...new Set([...a.sk,...b.sk])].filter(k=>!inn.includes(k));return{a,b,c,inn,cands,slots:SKMAX-inn.length}}
 function haigo(){if(need())return;let ih='';if(sel.length==2){const I=inhInfo();if(inh==null)inh=I.cands.slice(0,I.slots);ih=`<div class="box" id="inherit"><b class="yel">引き継ぐスキル</b>（あと${I.slots-inh.length}個まで／固有${I.inn.length}個＋引き継ぎ最大${I.slots}個＝最大${SKMAX}個）<br>${I.cands.length?I.cands.map(k=>`<label class="ck"><input type="checkbox" data-k="${k}" ${inh.includes(k)?'checked':''} onchange="tinh('${k}',this)"> ${SKILLS[k].name} <small>MP${SKILLS[k].mp}</small></label>`).join(''):'引き継げるスキルはありません'}</div>`}
- $(`<div class="head">配合所</div><div>2体を選んで掛け合わせます。<span class="red">親は消えます</span>。子はLv1、配合回数＝親の合計+1。</div>
- <div>${S.box.map(u=>`<div class="card${sel.includes(u.uid)?' sel':''}" data-uid="${u.uid}" onclick="tg(${u.uid})">${art(u.mid)}<br>${nm(u)}<br>Lv${u.lv} <span class="red">${u.cnt}回</span></div>`).join("")}</div>
- <div class="box" id="pre">${sel.length==2?(()=>{const[a,b]=sel.map(id=>S.box.find(x=>x.uid==id)),c=crossRule(a,b);return `${nm(a)} × ${nm(b)} → <span class="yel">${S.found.includes(c)?MON[c].name:'？？？'}</span><br>生まれる子の最大Lv：<b class="red" id="childmx">${maxLvU(a)+maxLvU(b)}</b>（${maxLvU(a)}＋${maxLvU(b)}）`})():'親を2体選んでください'}</div>
+ $(`<div class="head">配合所</div><div>2体を選んで掛け合わせます。<span class="red">親は消えます</span>。子はLv1、配合回数＝親の合計+1。<br><span class="yel">親は2体ともLv${BREED_LV}以上</span>が必要。子の最大Lv＝親2体の<b>今のLv</b>の合計（上限なし）。</div>
+ <div>${S.box.map(u=>`<div class="card${sel.includes(u.uid)?' sel':''}${u.lv<BREED_LV?' lowlv':''}" data-uid="${u.uid}" onclick="tg(${u.uid})">${art(u.mid)}<br>${nm(u)}<br>Lv${u.lv} <span class="red">${u.cnt}回</span>${u.lv<BREED_LV?'<br><small class="red">Lv10から配合可</small>':''}</div>`).join("")}</div>
+ <div class="box" id="pre">${bmsg?`<div class="red" id="bmsg">${bmsg}</div>`:''}${sel.length==2?(()=>{const[a,b]=sel.map(id=>S.box.find(x=>x.uid==id)),c=crossRule(a,b);return `${nm(a)} × ${nm(b)} → <span class="yel">${S.found.includes(c)?MON[c].name:'？？？'}</span><br>生まれる子の最大Lv：<b class="red" id="childmx">${childMx(a,b)}</b>（Lv${a.lv}＋Lv${b.lv}）`})():'親を2体選んでください'}</div>
  ${ih}<button id="breed" onclick="breed()" ${sel.length==2&&S.box.length>=2?'':'disabled'}>配合する</button><div id="bres"></div>`)}
-function tg(id){sel=sel.includes(id)?sel.filter(x=>x!=id):[...sel,id].slice(-2);inh=null;haigo()}
+function tg(id){const u=S.box.find(x=>x.uid==id);bmsg="";if(u&&u.lv<BREED_LV&&!sel.includes(id)){bmsg=`${nm(u)}はLv${u.lv}です。Lv${BREED_LV}から配合できます`;haigo();return}sel=sel.includes(id)?sel.filter(x=>x!=id):[...sel,id].slice(-2);inh=null;haigo()}
 function tinh(k,el){const I=inhInfo();if(el.checked){if(inh.length>=I.slots){el.checked=false;return alert(`引き継げるのは${I.slots}個までです`)}inh.push(k)}else inh=inh.filter(x=>x!=k);haigo()}
-function breed(){const I=inhInfo(),{a,b,c}=I,ch=mk(c,a.cnt+b.cnt+1,[...I.inn,...(inh||[]).filter(k=>I.cands.includes(k))].slice(0,SKMAX),maxLvU(a)+maxLvU(b));inh=null;
+function breed(){if(sel.length!=2)return;const P=sel.map(id=>S.box.find(x=>x.uid==id));if(P.some(u=>!u||u.lv<BREED_LV)){bmsg=`Lv${BREED_LV}から配合できます`;sel=sel.filter(id=>{const u=S.box.find(x=>x.uid==id);return u&&u.lv>=BREED_LV});haigo();return}bmsg="";const I=inhInfo(),{a,b,c}=I,ch=mk(c,a.cnt+b.cnt+1,[...I.inn,...(inh||[]).filter(k=>I.cands.includes(k))].slice(0,SKMAX),childMx(a,b));inh=null;
  S.box=S.box.filter(x=>x!=a&&x!=b);const wasP=S.party.includes(a.uid)||S.party.includes(b.uid);S.party=S.party.filter(x=>x!=a.uid&&x!=b.uid);
  S.box.push(ch);if(wasP||!S.party.length)S.party.push(ch.uid);if(!S.found.includes(c))S.found.push(c);
  const k=MON[a.mid].name+"+"+MON[b.mid].name;if(!S.foundCross.includes(k))S.foundCross.push(k);sel=[];save();haigo();
@@ -634,7 +634,7 @@ function zkDetail(id){const m=MON[id];if(!S||!S.found.includes(id))return;const 
  <p class="yel">スキル</p><ul class="splist">${sk}</ul>
  <p class="yel">配合のヒント</p><ul class="splist">${m.rare?sp:m.wild?'<li>野生でのみ仲間になる。出現階を探索しよう。</li>':`<li>${LINES[m.line][0]}系の子が生まれる組み合わせ（例）：${mixes.map(x=>x.split("×").map(i=>LINES[i][0]).join("×")).join("、")}</li><li>親の★が高いほど高ランクの子が生まれやすい。</li>`}${!m.rare&&sp?sp:""}</ul>
  <button class="blue" onclick="document.getElementById('detail').remove()">閉じる</button></div></div>`;document.body.appendChild(d)}
-function manual(){$(`<div class="head">PLAYMANUAL</div><div class="box">1. <span class="yel">NEWGAME</span>で名前を決め、相棒を1体もらいます。<br>2. <span class="yel">PLAYROOM</span>で地下を1階ずつ探索。戦闘は自動です。探索は<span class="red">15秒</span>に1回。<br>3. モンスターはHP・MP・攻撃力・守備力・素早さ・賢さの6能力と、成長タイプ（早熟/普通/晩成）、最大Lv、スキルを持ちます。戦闘ではMPを使ってスキルを自動で使い分けます（毒・眠り・混乱あり）。モンスターをタップすると詳細が見られます。<br>3b. 勝つと経験値とゴールド。ときどき敵が仲間になります（パーティは3体まで、残りは牧場）。<br>4. 負けると<span class="red">2階</span>戻されます。<br>5. <span class="yel">配合所</span>で2体を掛け合わせると新しいモンスターが誕生。子の系統は「血統」（1体目）の系統。配合回数が多いほど強く育ちます。<br>6. 特定の組み合わせでは特殊配合が起こります。<span class="yel">配合表</span>で確認しよう。</div>`)}
+function manual(){$(`<div class="head">PLAYMANUAL</div><div class="box">1. <span class="yel">NEWGAME</span>で名前を決め、相棒を1体もらいます。<br>2. <span class="yel">PLAYROOM</span>で地下を1階ずつ探索。戦闘は自動です。探索は<span class="red">15秒</span>に1回。<br>3. モンスターはHP・MP・攻撃力・守備力・素早さ・賢さの6能力と、成長タイプ（早熟/普通/晩成）、最大Lv、スキルを持ちます。戦闘ではMPを使ってスキルを自動で使い分けます（毒・眠り・混乱あり）。モンスターをタップすると詳細が見られます。<br>3b. 勝つと経験値とゴールド。ときどき敵が仲間になります（パーティは3体まで、残りは牧場）。<br>4. 負けると<span class="red">2階</span>戻されます。<br>5. <span class="yel">配合所</span>で2体を掛け合わせると新しいモンスターが誕生。子の系統は「血統」（1体目）の系統。親は2体とも<span class="red">Lv10以上</span>が必要で、子の最大Lvは<span class="yel">親2体の配合時のLvの合計</span>になります（最大Lv・能力に上限なし）。配合回数が多いほど強く育ちます。<br>6. 特定の組み合わせでは特殊配合が起こります。<span class="yel">配合表</span>で確認しよう。</div>`)}
 function route(){clearTimeout(timer);load();const h=location.hash.slice(1)||"top";
  const inG=!!S&&!["top","new"].includes(h);document.body.classList.toggle("ingame",inG);
  document.getElementById("back").innerHTML=inG&&["haigohyo","zukanhyo","bbs","manual","haigo","admin"].includes(h)?`<button id="backpr" class="blue" onclick="location.hash='playroom'">◀ PLAYROOMに戻る</button>`:"";
